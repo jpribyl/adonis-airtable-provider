@@ -1,5 +1,5 @@
 {
-  "name": "@adonis/adonis-airtable-provider",
+  "name": "@adonisjs/adonis-airtable-provider",
   "version": "1.0.0",
   "description": "adonis provider to integrate with airtables",
   "main": "index.js",
