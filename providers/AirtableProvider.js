@@ -9,4 +9,4 @@ class AirtableProvider extends ServiceProvider {
   }
 }
 
-module.exports = QueueProvider
+module.exports = AirtableProvider

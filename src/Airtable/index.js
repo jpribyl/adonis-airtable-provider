@@ -1,36 +1,66 @@
 "use strict";
 
+var Connection = require("airtable");
+
 class Airtable {
   constructor(Config) {
     this.Config = Config;
+    this.defaultApiKey = this.Config.get("airtable").defaultApiKey;
+    this.defaultBaseId = this.Config.get("airtable").defaultBaseId;
+    //allow for multiple connections to exist
+    this.bases = {};
+
+    //set up default connection
+    this.connect();
   }
 
-  get() {
+  connect(baseId = this.defaultBaseId, apiKey = this.defaultApiKey) {
+    let connection;
+    if (this.bases[baseId] != null) {
+      console.log("connection already exists, exiting");
+      return this.bases[baseId];
+    } else {
+      console.log("opening new airtable connection");
+      connection = new Connection({ apiKey: apiKey }).base(baseId);
+      this.bases[baseId] = connection;
+      return connection;
+    }
+  }
+
+  getTable(table, baseId = this.defaultBaseId, apiKey = this.defaultApiKey) {
     /**
-     * Read configuration using Config
-     * provider
+     * If not using the default connection defined through adonis configuration,
+     * then baseId and apiKey are required
      */
     const config = this.Config.get(`airtable`);
-    console.log(config.apiKey);
 
-    /**
-     * If there is an instance of queue already, then return it
-     */
-    //if (this._queuesPool[name]) {
-    //return this._queuesPool[name]
-    //}
+    // ensure existence of airtable connection to base
+    let base = this.bases[baseId];
+    if (base == null) {
+      base = this.connect(baseId, apiKey);
+    }
 
-    /**
-     * Create a new queue instance and save it's
-     * reference
-     */
-    //this._queuesPool[name] = new BeeQueue(name, config)
+    let response = [];
+    return base(table)
+      .select()
+      .eachPage(function page(records, fetchNextPage) {
+        // This function (`page`) will get called for each page of records.
+        records.forEach(function(record) {
+          //attach id to response
+          record.fields.id = record.id;
+          response.push(record.fields);
+        });
+        fetchNextPage();
+      })
+      .then(() => {
+        return response;
+      });
+  }
 
-    /**
-     * Return the instance back
-     */
-    //return this._queuesPool[name]
-    //}
+  findRecord(table) {}
+
+  insertRow(table, row) {
+    console.log("inserting row: ", row);
   }
 }
 

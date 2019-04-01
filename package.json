@@ -1,21 +1,46 @@
 {
-  "name": "@adonisjs/adonis-airtable-provider",
-  "version": "1.0.0",
-  "description": "adonis provider to integrate with airtables",
-  "main": "index.js",
-  "scripts": {},
-  "repository": {
+  "_from": "github:jpribyl/adonis-airtable-provider",
+  "_id": "@adonisjs/adonis-airtable-provider@1.0.0",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/@adonisjs/adonis-airtable-provider",
+  "_phantomChildren": {},
+  "_requested": {
     "type": "git",
-    "url": "git+https://github.com/jpribyl/adonis-airtable-provider.git"
+    "raw": "jpribyl/adonis-airtable-provider",
+    "rawSpec": "jpribyl/adonis-airtable-provider",
+    "saveSpec": "github:jpribyl/adonis-airtable-provider",
+    "fetchSpec": null,
+    "gitCommittish": null
   },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "github:jpribyl/adonis-airtable-provider#325c5d1f16959fd82287e96884d9f005f33d0d74",
+  "_spec": "jpribyl/adonis-airtable-provider",
+  "_where": "/home/j/tt/commit/commit-web-app/commit-api",
+  "author": {
+    "name": "jpribyl"
+  },
+  "bugs": {
+    "url": "https://github.com/jpribyl/adonis-airtable-provider/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "adonis provider to integrate with airtables",
+  "homepage": "https://github.com/jpribyl/adonis-airtable-provider#readme",
   "keywords": [
     "adonisjs",
     "airtable"
   ],
-  "author": "jpribyl",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jpribyl/adonis-airtable-provider/issues"
+  "main": "index.js",
+  "name": "@adonisjs/adonis-airtable-provider",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpribyl/adonis-airtable-provider.git"
   },
-  "homepage": "https://github.com/jpribyl/adonis-airtable-provider#readme"
+  "scripts": {},
+  "version": "1.0.0"
 }
