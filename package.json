@@ -1,0 +1,21 @@
+{
+  "name": "@adonis/adonis-airtable-provider",
+  "version": "1.0.0",
+  "description": "adonis provider to integrate with airtables",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpribyl/adonis-airtable-provider.git"
+  },
+  "keywords": [
+    "adonisjs",
+    "airtable"
+  ],
+  "author": "jpribyl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jpribyl/adonis-airtable-provider/issues"
+  },
+  "homepage": "https://github.com/jpribyl/adonis-airtable-provider#readme"
+}
