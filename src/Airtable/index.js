@@ -5,19 +5,25 @@ var Connection = require("airtable");
 class Airtable {
   constructor(Config) {
     this.Config = Config;
+
+    // convenience variables
     this.defaultApiKey = this.Config.get("airtable").defaultApiKey;
     this.defaultBaseId = this.Config.get("airtable").defaultBaseId;
-    //allow for multiple connections to exist
+    // keeping connections in an object allows multiple to exist simultaneously
     this.bases = {};
 
-    //set up default connection
-    this.connect();
+    // set up default connection
+    this.getOrConnect();
   }
 
-  connect(baseId = this.defaultBaseId, apiKey = this.defaultApiKey) {
+  /*
+   *    This method will check in the `this.bases` object to see if a connection to the
+   *    baseId already exists. If it does exist, it will return that connection and
+   *    if it does not it will open a new connection and return that
+   */
+  getOrConnect(baseId = this.defaultBaseId, apiKey = this.defaultApiKey) {
     let connection;
     if (this.bases[baseId] != null) {
-      console.log("connection already exists, exiting");
       return this.bases[baseId];
     } else {
       console.log("opening new airtable connection");
@@ -27,18 +33,13 @@ class Airtable {
     }
   }
 
+  /*
+   *    If not using the default connection defined through adonis configuration
+   *    (config/airtable.js), then baseId and apiKey are required
+   */
   getTable(table, baseId = this.defaultBaseId, apiKey = this.defaultApiKey) {
-    /**
-     * If not using the default connection defined through adonis configuration,
-     * then baseId and apiKey are required
-     */
-    const config = this.Config.get(`airtable`);
-
     // ensure existence of airtable connection to base
-    let base = this.bases[baseId];
-    if (base == null) {
-      base = this.connect(baseId, apiKey);
-    }
+    const base = this.getOrConnect(baseId, apiKey);
 
     let response = [];
     return base(table)
@@ -46,7 +47,7 @@ class Airtable {
       .eachPage(function page(records, fetchNextPage) {
         // This function (`page`) will get called for each page of records.
         records.forEach(function(record) {
-          //attach id to response
+          // attach json array with record fields and id to response
           record.fields.id = record.id;
           response.push(record.fields);
         });
@@ -57,10 +58,89 @@ class Airtable {
       });
   }
 
-  findRecord(table) {}
+  /*
+   *    This method will need to be written when designing tests (IE insert a record,
+   *    find it, delete it, try to find it expecting fail, etc)
+   */
+  findRecord(
+    table,
+    recordId,
+    baseId = this.defaultBaseId,
+    apiKey = this.defaultApiKey
+  ) {}
 
-  insertRow(table, row) {
-    console.log("inserting row: ", row);
+  /*
+   *    Add a new record and return its airtable ID - ID will likely need to be
+   *    written to your local db if you want to be able to edit the record
+   *    later
+   */
+  insertRecord(
+    table,
+    recordToInsert,
+    baseId = this.defaultBaseId,
+    apiKey = this.defaultApiKey
+  ) {
+    //console.log("inserting airtable record");
+    const base = this.getOrConnect(baseId, apiKey);
+    return base(table)
+      .create({
+        ...recordToInsert
+      })
+      .then(record => {
+        return record.getId();
+      })
+      .catch(err => {
+        console.log("error: ", err);
+        return;
+      });
+  }
+
+  /*
+   *Update a record by its table and airtable ID - this is why you need to
+   *store the airtable ID locally
+   */
+  updateRecord(
+    table,
+    recordId,
+    recordDetails,
+    baseId = this.defaultBaseId,
+    apiKey = this.defaultApiKey
+  ) {
+    //console.log("updating record: ", recordId);
+    const base = this.getOrConnect(baseId, apiKey);
+
+    return base(table)
+      .update(recordId, recordDetails)
+      .then(record => {
+        return record.fields;
+      })
+      .catch(err => {
+        console.log("error: ", err);
+        return;
+      });
+  }
+
+  /*
+   *Useful for writing transactions to delete records when something fails on
+   *your local db
+   */
+  deleteRecord(
+    table,
+    recordId,
+    baseId = this.defaultBaseId,
+    apiKey = this.defaultApiKey
+  ) {
+    //console.log("deleting record: ", recordId);
+    const base = this.getOrConnect(baseId, apiKey);
+    return base(table)
+      .destroy(recordId)
+      .then(record => {
+        return record.id;
+      })
+      .catch(err => {
+        console.log("error: ", err);
+        return;
+      });
   }
 }
 
