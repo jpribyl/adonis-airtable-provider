@@ -41,7 +41,6 @@ class Airtable {
       console.log("opening new airtable connection");
       connection = new Connection({ apiKey: apiKey }).base(baseId);
       this.bases[baseId] = connection;
-      console.log(this.bases);
       return connection;
     }
   }
