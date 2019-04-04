@@ -1,24 +1,29 @@
 {
+  "_args": [
+    [
+      "github:jpribyl/adonis-airtable-provider",
+      "/home/j/tt/commit/commit-web-app/commit-api"
+    ]
+  ],
   "_from": "github:jpribyl/adonis-airtable-provider",
-  "_id": "@adonisjs/adonis-airtable-provider@1.0.0",
+  "_id": "@adonisjs/adonis-airtable-provider@github:jpribyl/adonis-airtable-provider#325c5d1f16959fd82287e96884d9f005f33d0d74",
   "_inBundle": false,
   "_integrity": "",
   "_location": "/@adonisjs/adonis-airtable-provider",
   "_phantomChildren": {},
   "_requested": {
     "type": "git",
-    "raw": "jpribyl/adonis-airtable-provider",
-    "rawSpec": "jpribyl/adonis-airtable-provider",
+    "raw": "github:jpribyl/adonis-airtable-provider",
+    "rawSpec": "github:jpribyl/adonis-airtable-provider",
     "saveSpec": "github:jpribyl/adonis-airtable-provider",
     "fetchSpec": null,
     "gitCommittish": null
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "github:jpribyl/adonis-airtable-provider#325c5d1f16959fd82287e96884d9f005f33d0d74",
-  "_spec": "jpribyl/adonis-airtable-provider",
+  "_spec": "github:jpribyl/adonis-airtable-provider",
   "_where": "/home/j/tt/commit/commit-web-app/commit-api",
   "author": {
     "name": "jpribyl"

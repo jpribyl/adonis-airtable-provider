@@ -9,11 +9,12 @@ class Airtable {
     // convenience variables
     this.defaultApiKey = this.Config.get("airtable").defaultApiKey;
     this.defaultBaseId = this.Config.get("airtable").defaultBaseId;
+
     // keeping connections in an object allows multiple to exist simultaneously
     this.bases = {};
 
     // set up default connection
-    this.getOrConnect();
+    this.getOrConnect(this.defaultBaseId, this.defaultApiKey, true);
   }
 
   /*
@@ -21,14 +22,26 @@ class Airtable {
    *    baseId already exists. If it does exist, it will return that connection and
    *    if it does not it will open a new connection and return that
    */
-  getOrConnect(baseId = this.defaultBaseId, apiKey = this.defaultApiKey) {
+  getOrConnect(
+    baseId = this.defaultBaseId,
+    apiKey = this.defaultApiKey,
+    sendWarning = false
+  ) {
     let connection;
-    if (this.bases[baseId] != null) {
+    if (baseId == null || apiKey == null) {
+      if (sendWarning === true) {
+        console.log(
+          "warning, no airtable apikey or baseid set, no connection will be openened"
+        );
+      }
+      return;
+    } else if (this.bases[baseId] != null) {
       return this.bases[baseId];
     } else {
       console.log("opening new airtable connection");
       connection = new Connection({ apiKey: apiKey }).base(baseId);
       this.bases[baseId] = connection;
+      console.log(this.bases);
       return connection;
     }
   }
@@ -40,6 +53,9 @@ class Airtable {
   getTable(table, baseId = this.defaultBaseId, apiKey = this.defaultApiKey) {
     // ensure existence of airtable connection to base
     const base = this.getOrConnect(baseId, apiKey);
+    if (base == null) {
+      return;
+    }
 
     let response = [];
     return base(table)
@@ -82,6 +98,10 @@ class Airtable {
   ) {
     //console.log("inserting airtable record");
     const base = this.getOrConnect(baseId, apiKey);
+    if (base == null) {
+      return;
+    }
+
     return base(table)
       .create({
         ...recordToInsert
@@ -108,6 +128,9 @@ class Airtable {
   ) {
     //console.log("updating record: ", recordId);
     const base = this.getOrConnect(baseId, apiKey);
+    if (base == null) {
+      return;
+    }
 
     return base(table)
       .update(recordId, recordDetails)
@@ -132,6 +155,10 @@ class Airtable {
   ) {
     //console.log("deleting record: ", recordId);
     const base = this.getOrConnect(baseId, apiKey);
+    if (base == null) {
+      return;
+    }
+
     return base(table)
       .destroy(recordId)
       .then(record => {
